@@ -14,7 +14,7 @@ func main() {
 	todo := todo_db.GetAllTodo(db)
 
 	engine := gin.Default()
-	engine.GET("/", func(c *gin.Context) {
+	engine.GET("/todo", func(c *gin.Context) {
         c.JSON(http.StatusOK, todo)
     })
     engine.Run(":8080")

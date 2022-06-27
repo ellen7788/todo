@@ -4,9 +4,10 @@ import utilStyles from '../styles/utils.module.css';
 import { getSortedPostsData } from '../lib/posts';
 import Link from 'next/link';
 import Date from '../components/date';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
+import { getTodoResponse, Todo, TodoResponse } from '../lib/todos';
 
-export default function Home({ allPostsData }: { allPostsData: { date: string; title: string; id: string }[] }) {
+export default function Home({ todoList }: { todoList: Todo[] }) {
   return (
     <Layout home>
       <Head>
@@ -22,28 +23,24 @@ export default function Home({ allPostsData }: { allPostsData: { date: string; t
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
-            <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>
-                <a>{title}</a>
-              </Link>
-              <br />
-              <small className={utilStyles.lightText}>
-                <Date dateString={date} />
-              </small>
-            </li>
-          ))}
+          {todoList.map((todo) => {
+            return (
+              <>
+                <div>{todo.ID}</div>
+                <div>{todo.Title}</div>
+                <div>{todo.Description}</div>
+                <div>{todo.Finished ? 'Finished!' : "Don't Finish"}</div>
+              </>
+            );
+          })}
         </ul>
       </section>
     </Layout>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData();
-  return {
-    props: {
-      allPostsData,
-    },
-  };
+export const getServerSideProps: GetServerSideProps = async () => {
+  const todoList = await getTodoResponse();
+
+  return { props: { todoList } };
 };
