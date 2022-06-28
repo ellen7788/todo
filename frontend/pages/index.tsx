@@ -6,6 +6,7 @@ import { getSortedPostsData } from '../lib/posts';
 import Link from 'next/link';
 import Date from '../components/date';
 import { GetServerSideProps, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 import { getTodoResponse, Todo, TodoResponse } from '../lib/todos';
 import Checkbox from '@mui/material/Checkbox';
 import Table from '@mui/material/Table';
@@ -18,6 +19,15 @@ import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 
 export default function Home({ todoList }: { todoList: Todo[] }) {
+  const router = useRouter();
+
+  const handleEditButton = (id: number) => {
+    router.push({
+      pathname: '/edit',
+      query: { id: id },
+    });
+  };
+
   const AddButtonClicked = () => {
     Router.push('/add');
   };
@@ -44,6 +54,7 @@ export default function Home({ todoList }: { todoList: Todo[] }) {
                 <TableCell align="left">Title</TableCell>
                 <TableCell align="left">Description</TableCell>
                 <TableCell align="center">Finished</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -56,6 +67,11 @@ export default function Home({ todoList }: { todoList: Todo[] }) {
                   <TableCell align="left">{row.Description}</TableCell>
                   <TableCell align="center">
                     <Checkbox disabled checked={row.Finished} />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button variant="contained" color="secondary" size="small" onClick={() => handleEditButton(row.ID)}>
+                      編集
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

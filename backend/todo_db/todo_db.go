@@ -55,11 +55,22 @@ func GetAllTodo(db *sql.DB) map[int]ToDo {
 	return todos
 }
 
+func GetOneTodo(db *sql.DB, id int) ToDo {
+	var todo ToDo
+	err := db.QueryRow("SELECT * FROM todos WHERE id=?", id).Scan(&todo.ID, &todo.Title, &todo.Description, &todo.Finished)
+	if err != nil {
+		log.Print("prepare error :", err)
+	}
+	return todo
+}
+
 func InsertTodo(db *sql.DB, todo ToDo) {
 	ins, err := db.Prepare("INSERT INTO todos(title, description) VALUES(?,?)")
 	if err != nil {
 		log.Print("prepare error :", err)
 	}
+	defer ins.Close()
+
 	ins.Exec(todo.Title, todo.Description)
 }
 

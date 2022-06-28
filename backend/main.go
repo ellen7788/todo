@@ -18,6 +18,13 @@ func main() {
         c.JSON(http.StatusOK, todo)
     })
 
+	engine.POST("/oneTodo", func(c *gin.Context) {
+		var query struct { ID int };
+		c.BindJSON(&query)
+		todo := todo_db.GetOneTodo(db, query.ID)
+		c.JSON(http.StatusOK, todo)
+    })
+
 	engine.POST("/insert", func(c *gin.Context) {
 		var resTodo todo_db.ToDo;
 		c.BindJSON(&resTodo)
