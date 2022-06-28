@@ -74,7 +74,13 @@ func InsertTodo(db *sql.DB, todo ToDo) {
 	ins.Exec(todo.Title, todo.Description)
 }
 
-func UpdateTodo(db *sql.DB, todo ToDo) {}
+func UpdateTodo(db *sql.DB, todo ToDo) {
+	upd, err := db.Prepare("UPDATE todos SET title=?, description=?, finished=? where id=? ")
+    if err != nil {
+        log.Fatal(err)
+    }
+    upd.Exec(todo.Title, todo.Description, todo.Finished, todo.ID)
+}
 
 func DeleteTodo(db *sql.DB, id int) {
 	del, err := db.Prepare("DELETE FROM todos WHERE id=?")

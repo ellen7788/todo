@@ -40,20 +40,20 @@ export default function Edit({ todo }: { todo: Todo }) {
     event.preventDefault();
 
     const sendingTodo: Todo = { ID: todo.ID, Title: title, Description: description, Finished: finished };
-    // const res = await fetch('/api/insert', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(sendingTodo),
-    // });
+    const res = await fetch('/api/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(sendingTodo),
+    });
 
-    // if (res.status == 200) {
-    //   setOpenSuccess(true);
-    //   Router.push('/');
-    // } else {
-    //   setOpenError(true);
-    // }
+    if (res.status == 200) {
+      setOpenSuccess(true);
+      Router.push('/');
+    } else {
+      setOpenError(true);
+    }
   };
   const DeleteButtonClicked = async (event: React.MouseEvent<HTMLInputElement>) => {
     event.preventDefault();

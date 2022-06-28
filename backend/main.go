@@ -32,6 +32,13 @@ func main() {
 		c.Status(http.StatusOK)
     })
 
+	engine.POST("/update", func(c *gin.Context) {
+		var resTodo todo_db.ToDo;
+		c.BindJSON(&resTodo)
+		todo_db.UpdateTodo(db, resTodo)
+		c.Status(http.StatusOK)
+    })
+
 	engine.POST("/delete", func(c *gin.Context) {
 		var query struct { ID int };
 		c.BindJSON(&query)
