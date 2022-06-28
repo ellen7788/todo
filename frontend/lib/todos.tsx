@@ -1,3 +1,5 @@
+import { backendBaseUrl } from '../components/url';
+
 export type TodoResponse = {
   id: {
     data: Todo;
@@ -12,7 +14,7 @@ export type Todo = {
 };
 
 export const getTodoResponse = async (): Promise<Todo[]> => {
-  const res = await fetch('http://backend:8080/todo');
+  const res = await fetch(backendBaseUrl + '/todo');
   const data: TodoResponse = await res.json();
 
   const dataList: Todo[] = [];

@@ -17,5 +17,13 @@ func main() {
 	engine.GET("/todo", func(c *gin.Context) {
         c.JSON(http.StatusOK, todo)
     })
+
+	engine.POST("/insert", func(c *gin.Context) {
+		var resTodo todo_db.ToDo;
+		c.BindJSON(&resTodo)
+		todo_db.InsertTodo(db, resTodo)
+		c.Status(http.StatusOK)
+    })
+
     engine.Run(":8080")
 }

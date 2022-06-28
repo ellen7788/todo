@@ -54,3 +54,15 @@ func GetAllTodo(db *sql.DB) map[int]ToDo {
 
 	return todos
 }
+
+func InsertTodo(db *sql.DB, todo ToDo) {
+	ins, err := db.Prepare("INSERT INTO todos(title, description) VALUES(?,?)")
+	if err != nil {
+		log.Print("prepare error :", err)
+	}
+	ins.Exec(todo.Title, todo.Description)
+}
+
+func UpdateTodo(db *sql.DB, todo ToDo) {}
+
+func DeleteTodo(db *sql.DB, id int) {}

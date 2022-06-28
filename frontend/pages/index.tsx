@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Router from 'next/router';
 import Layout, { siteTitle } from '../components/layout';
 import utilStyles from '../styles/utils.module.css';
 import { getSortedPostsData } from '../lib/posts';
@@ -14,8 +15,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
 
 export default function Home({ todoList }: { todoList: Todo[] }) {
+  const AddButtonClicked = () => {
+    Router.push('/add');
+  };
+
   return (
     <Layout home>
       <Head>
@@ -56,6 +62,9 @@ export default function Home({ todoList }: { todoList: Todo[] }) {
             </TableBody>
           </Table>
         </TableContainer>
+        <Button variant="contained" sx={{ mx: 4, my: 1, float: 'right' }} onClick={AddButtonClicked}>
+          追加
+        </Button>
       </section>
     </Layout>
   );
