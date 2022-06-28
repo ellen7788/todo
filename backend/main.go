@@ -11,10 +11,10 @@ import (
 func main() {
 	db := todo_db.ConnectDB()
 	defer db.Close()
-	todo := todo_db.GetAllTodo(db)
-
+	
 	engine := gin.Default()
 	engine.GET("/todo", func(c *gin.Context) {
+		todo := todo_db.GetAllTodo(db)
         c.JSON(http.StatusOK, todo)
     })
 
@@ -29,6 +29,13 @@ func main() {
 		var resTodo todo_db.ToDo;
 		c.BindJSON(&resTodo)
 		todo_db.InsertTodo(db, resTodo)
+		c.Status(http.StatusOK)
+    })
+
+	engine.POST("/delete", func(c *gin.Context) {
+		var query struct { ID int };
+		c.BindJSON(&query)
+		todo_db.DeleteTodo(db, query.ID)
 		c.Status(http.StatusOK)
     })
 

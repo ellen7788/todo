@@ -55,7 +55,24 @@ export default function Edit({ todo }: { todo: Todo }) {
     //   setOpenError(true);
     // }
   };
-  const DeleteButtonClicked = (event: React.MouseEvent<HTMLInputElement>) => {};
+  const DeleteButtonClicked = async (event: React.MouseEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    const res = await fetch('/api/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ID: todo.ID }),
+    });
+
+    if (res.status == 200) {
+      setOpenSuccess(true);
+      Router.push('/');
+    } else {
+      setOpenError(true);
+    }
+  };
 
   return (
     <Layout>
