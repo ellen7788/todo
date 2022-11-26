@@ -21,6 +21,24 @@ import { Button } from '@mui/material';
 export default function Home({ todoList }: { todoList: Todo[] }) {
   const router = useRouter();
 
+  const handleCheckbox = async (id: number) => {
+    const sendingTodo: Todo = todoList.find((todo) => todo.ID === id);
+    sendingTodo.Finished = !sendingTodo.Finished;
+    const res = await fetch('/api/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(sendingTodo),
+    });
+
+    if (res.status == 200) {
+      // setOpenSuccess(true);
+      // Router.push('/');
+    } else {
+      // setOpenError(true);
+    }
+  };
   const handleEditButton = (id: number) => {
     router.push({
       pathname: '/edit',
@@ -66,7 +84,12 @@ export default function Home({ todoList }: { todoList: Todo[] }) {
                   <TableCell align="left">{row.Title}</TableCell>
                   <TableCell align="left">{row.Description}</TableCell>
                   <TableCell align="center">
-                    <Checkbox disabled checked={row.Finished} />
+                    {row.Finished ? (
+                      <Checkbox defaultChecked onChange={() => handleCheckbox(row.ID)} />
+                    ) : (
+                      <Checkbox onChange={() => handleCheckbox(row.ID)} />
+                    )}
+                    {/* <Checkbox checked={row.Finished} onChange={() => handleCheckbox(row.ID)} /> */}
                   </TableCell>
                   <TableCell align="center">
                     <Button variant="contained" color="secondary" size="small" onClick={() => handleEditButton(row.ID)}>
